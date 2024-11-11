@@ -1,36 +1,27 @@
 from flask import Flask, request, jsonify
 import joblib
-import numpy as np
 
+# Inicializar la aplicación Flask
 app = Flask(__name__)
 
-# Cargar el modelo entrenado y el binarizador
-try:
-    modelo_enfermedad = joblib.load('modelo.pkl')  # Modelo de diagnóstico entrenado
-    mlb = joblib.load('mlb.pkl')  # MultiLabelBinarizer usado para codificar síntomas
-except FileNotFoundError as e:
-    print("Error al cargar el modelo o el binarizador:", e)
-    exit()
+# Cargar el modelo al iniciar la API
+modelo = joblib.load('modelo.pkl')
 
+# Definir un endpoint para predicciones
 @app.route('/predecir', methods=['POST'])
 def predecir():
-    datos = request.json.get("sintomas", [])
-    
+    # Obtener los datos de síntomas del JSON enviado
+    datos = request.json.get('datos', [])
     if not datos:
-        return jsonify({"error": "No se proporcionaron síntomas"}), 400
+        return jsonify({"error": "No se proporcionaron datos"}), 400
+
+    # Aquí puedes procesar los datos para que coincidan con el formato esperado por el modelo
+    # Por ejemplo, convertir los síntomas en un vector como lo hicimos al entrenar el modelo
+    # En este caso, asumimos que ya son compatibles con el modelo
+    resultado = modelo.predict([datos])  # Ajusta el formato según tu modelo
     
-    # Codificar los síntomas con el binarizador
-    sintomas_encoded = mlb.transform([datos])  # Transformar la lista de síntomas ingresada a la representación binaria
-
-    # Realizar la predicción
-    enfermedad_predicha = modelo_enfermedad.predict(sintomas_encoded)[0]
-    probabilidad_clase_predicha = np.max(modelo_enfermedad.predict_proba(sintomas_encoded)) * 100  # Obtener la probabilidad de la clase predicha
-
-    # Retornar el resultado como JSON
-    return jsonify({
-        'enfermedad_predicha': str(enfermedad_predicha),
-        'probabilidad': f"{probabilidad_clase_predicha:.2f}%"
-    })
+    # Retornar la predicción en formato JSON
+    return jsonify({"enfermedad": resultado[0]})
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
