@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 import joblib
 
@@ -15,13 +16,13 @@ def predecir():
     if not datos:
         return jsonify({"error": "No se proporcionaron datos"}), 400
 
-    # Aquí puedes procesar los datos para que coincidan con el formato esperado por el modelo
-    # Por ejemplo, convertir los síntomas en un vector como lo hicimos al entrenar el modelo
-    # En este caso, asumimos que ya son compatibles con el modelo
+    # Procesar los datos y hacer la predicción
     resultado = modelo.predict([datos])  # Ajusta el formato según tu modelo
-    
-    # Retornar la predicción en formato JSON
+
+    # Retornar la predicción
     return jsonify({"enfermedad": resultado[0]})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Obtener el puerto desde el entorno de Render
+    port = int(os.environ.get('PORT', 5001))  # 5000 es el valor por defecto
+    app.run(host='0.0.0.0', port=port)  # Escuchar en 0.0.0.0 y en el puerto asignado por Render
