@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Cargar el modelo entrenado y el binarizador
 try:
-    modelo_enfermedad = joblib.load('modelo_diagnostico.pkl')  # Modelo de diagnóstico entrenado
+    modelo_enfermedad = joblib.load('modelo.pkl')  # Modelo de diagnóstico entrenado
     mlb = joblib.load('mlb.pkl')  # MultiLabelBinarizer usado para codificar síntomas
 except FileNotFoundError as e:
     print("Error al cargar el modelo o el binarizador:", e)
