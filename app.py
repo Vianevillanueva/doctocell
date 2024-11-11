@@ -70,6 +70,6 @@ def predecir():
 
 if __name__ == '__main__':
     # Obtener el puerto desde el entorno de Render o usar el valor por defecto 5000
-    port = int(os.environ.get('PORT', 5001))  # 5000 es el valor por defecto
+    port = int(os.environ.get('PORT', 5001))  # Usa la variable de entorno PORT
     app.run(host='0.0.0.0', port=port)  # Escuchar en todas las direcciones (0.0.0.0) y en el puerto asignado
 
