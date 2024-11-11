@@ -2,4 +2,4 @@ flask
 joblib
 numpy
 scikit-learn
-mysql
+mysql-connector-python
