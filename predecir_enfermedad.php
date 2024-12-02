@@ -4,7 +4,7 @@ $sintomas = isset($_SESSION['sintomas']) ? $_SESSION['sintomas'] : [];
 
 if (!empty($sintomas)) {
     // URL de la API de Google Colab expuesta a través de ngrok
-    $api_url = 'https://d36b-34-125-105-218.ngrok-free.ap/predecir'; // Reemplaza con la URL generada por ngrok
+    $api_url ='https://doctocell-12.onrender.com/predecir'';
 
     // Preparar los datos en formato JSON
     $datos = json_encode(['datos' => [implode(' ', $sintomas)]]);
